@@ -1,0 +1,31 @@
+pipeline{
+        agent any
+        environment{
+            CREATE_SCHEMA == "true"
+            DATABASE_URI = credentials("DATABASE_URI")
+        }
+        stages{
+            stage('Setup') {
+                steps{
+                    sh "bash jenkins/setup.sh"
+                }
+            }
+            stage('Test') {
+                steps{
+                    sh "bash jenkins/test.sh"
+                }
+            }
+            stage('Create Schema') {
+                steps{
+                    script{
+                        if (env.CREATE_SCHEMA == "true") {
+                            sh 'echo "Creating Schema..."'
+                            sh "python3 create.py"
+                            sh 'echo "Schema Created"'
+                        }
+                    }   
+                }
+            }
+            stage('Run') {
+                steps{
+}
