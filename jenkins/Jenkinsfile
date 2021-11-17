@@ -2,36 +2,38 @@ pipeline {
     agent any
     environment {
         CREATE_SCHEMA = "true"
-        DATABASE_URI = credentials("DATABASE_URI")
+        DATABASE_URI = credentials{"DATABASE_URI"}
     }
     stages {
         stage('Setup') {
             steps {
-                sh "bash jenkins/setup.sh"
+                sh "bash setup.sh"
             }
         }
         stage('Test') {
-                steps {
-                    sh "bash jenkins/test.sh"
+            steps {
+                sh "bash jenkins/tsets.sh"
             }
         }
         stage('Create Schema') {
-                steps {
-                    script{
-                        if (env.CREATE_SCHEMA == "true") {
-                            sh "bash jenkins/create_schema.sh"
-                        }
+            steps {
+                script{
+                    if (env.CREATE_SCHEMA == "true") {
+                        sh echo "Creating Schema..."
+                        sh "python3 create.py"
+                        sh echo "Schema Created!"
                     }
-                }   
+                }
             }
         }
         stage('Run') {
-                steps {
-                    script{
-                        if (env.RUN_APP == "true") {
-                            sh "bash jenkins/run_app.py"
+            steps {
+                script
+                    if (env.RUN_APP == "true") {
+                        sh "python3 app.py"
                     }
-                }   
+                }
             }
         }
     }
+}
