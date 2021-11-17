@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         CREATE_SCHEMA = "true"
-        DATABASE_URI = credentials{"DATABASE_URI"}
+        DATABASE_URI = credentials("DATABASE_URI")
     }
     stages {
         stage('Setup') {
@@ -28,12 +28,12 @@ pipeline {
         }
         stage('Run') {
             steps {
-                script
+                script{
                     if (env.RUN_APP == "true") {
-                        sh "python3 app.py"
+                        sh "bash jenkins/run_app.py"
                     }
                 }
             }
         }
     }
-    
+}    
