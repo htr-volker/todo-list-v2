@@ -1,9 +1,6 @@
 FROM python:latest
-
+WORKDIR /app
 COPY . .
-
-RUN pip install -r requirements.txt
-
-ENV export DATABASE_URI=DATABASE_URI
-
+RUN pip install flask
 EXPOSE 5000
+ENTRYPOINT ["python", "app.py"]
