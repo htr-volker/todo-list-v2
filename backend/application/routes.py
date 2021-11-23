@@ -21,6 +21,7 @@ def read_tasks():
     for task in all_tasks:
         tasks_dict["tasks"].append(
             {
+                "id": "task.id"
                 "description": task.description,
                 "completed": task.completed
             }
