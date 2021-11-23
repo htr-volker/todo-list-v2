@@ -1,0 +1,17 @@
+version: "3.8"
+services:
+  todo-app:
+    build: .
+    image: todo-app:latest
+    container_name: todo-app
+    environment:
+      DATABASE_URI:
+      CREATE_SCHEMA:
+    application:
+        build: ./application
+    ports:
+    - target: 5000
+      published: 80
+    nginx:
+        image: nginx:latest
+        container_name: nginx
